@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: vimEmu.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: vimEmu.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var axios = require("axios");
+
+/**
+ * @module VimEmu
+ */
+
+/**
+ * VimEmu Data Center Model
+ * @typedef {Object} DataCenter
+ * @property {string} internalname
+ * @property {array} ext
+ * @property {string} n_running_containers
+ * @property {string} label
+ * @property {string} switch
+ * @property {array} vnf_list
+ * @property {array} metadata
+ */
+
+/**
+ * Represents a Data Center List.
+ * @return {array&lt;DataCenter>} DataCenter List
+ */
+exports.listDatacenters = () => {
+  return new Promise(resolve => {
+    const url = `http://${process.env.VIM_EMU_IP}:${process.env.VIM_EMU_PORT}/restapi/datacenter`;
+    axios
+      .get(url)
+      .then(response => {
+        switch (response.status) {
+          case 200:
+            resolve(response.data);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          switch (error.response.status) {
+            case 401:
+              resolve(error.response.data);
+            case 403:
+              resolve(error.response.data);
+            default:
+              resolve(error.response.data);
+          }
+        } else {
+          resolve(error);
+        }
+      });
+  });
+};
+
+/**
+ * Represents a requested Data Center.
+ * @param {string} dc_label - Name of VNF
+ * @return {DataCenter} DataCenter
+ */
+exports.getVNFinfo = dc_label => {
+  return new Promise(resolve => {
+    const url = `http://${process.env.VIM_EMU_IP}:${process.env.VIM_EMU_PORT}/restapi/datacenter/${dc_label}`;
+    axios
+      .get(url)
+      .then(response => {
+        switch (response.status) {
+          case 200:
+            resolve(response.data);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          switch (error.response.status) {
+            case 401:
+              resolve(error.response.data);
+            case 403:
+              resolve(error.response.data);
+            default:
+              resolve(error.response.data);
+          }
+        } else {
+          resolve(error);
+        }
+      });
+  });
+};
+
+/**
+ * Represents a requested Data Center.
+ * @param {string} dc_label - Name of VNF
+ * @param {string} compute_name - Compute Name of VNF
+ * @return {string} Deleted
+ */
+exports.deleteVNF = (dc_label, compute_name) => {
+  return new Promise(resolve => {
+    const url = `http://${process.env.VIM_EMU_IP}:${process.env.VIM_EMU_PORT}/restapi/compute/${dc_label}/${compute_name}`;
+    axios
+      .delete(url)
+      .then(response => {
+        switch (response.status) {
+          case 200:
+            resolve(response.data);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          switch (error.response.status) {
+            case 401:
+              resolve(error.response.data);
+            case 403:
+              resolve(error.response.data);
+            default:
+              resolve(error.response.data);
+          }
+        } else {
+          resolve(error);
+        }
+      });
+  });
+};
+
+/**
+ * Represents a create the action that monitors the counters of a VNF interface..
+ * @param {string} vnf_name - Name of the VNF to be monitored
+ * @param {string} vnf_interface - Name of the VNF interface to be monitored
+ * @param {string} metric - One of the following metrics:[tx_bytes, rx_bytes, tx_packets, rx_packets]
+ * @return {string} OK
+ */
+exports.createMonitoring = (vnf_name, vnf_interface, metric) => {
+  return new Promise(resolve => {
+    const params = { vnf_name, vnf_interface, metric };
+    const url = `http://${process.env.VIM_EMU_IP}:${process.env.VIM_EMU_PORT}/restapi/monitor/interface`;
+    axios
+      .put(url, { params })
+      .then(response => {
+        switch (response.status) {
+          case 200:
+            resolve(response.data);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          switch (error.response.status) {
+            case 400:
+              resolve(error.response.data);
+            default:
+              resolve(error.response.data);
+          }
+        } else {
+          resolve(error);
+        }
+      });
+  });
+};
+
+/**
+ * Represents a delete the action that monitors the counters of a VNF interface.
+ * @param {string} vnf_name - Name of the VNF to be monitored
+ * @param {string} vnf_interface - Name of the VNF interface to be monitored
+ * @param {string} metric - One of the following metrics:[tx_bytes, rx_bytes, tx_packets, rx_packets]
+ * @return {string} OK
+ */
+exports.deleteMonitoring = (vnf_name, vnf_interface, metric) => {
+  return new Promise(resolve => {
+    const params = { vnf_name, vnf_interface, metric };
+    const url = `http://${process.env.VIM_EMU_IP}:${process.env.VIM_EMU_PORT}/restapi/monitor/interface`;
+    axios
+      .delete(url, { params })
+      .then(response => {
+        switch (response.status) {
+          case 200:
+            resolve(response.data);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          switch (error.response.status) {
+            case 400:
+              resolve(error.response.data);
+            default:
+              resolve(error.response.data);
+          }
+        } else {
+          resolve(error);
+        }
+      });
+  });
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AAA.html">AAA</a></li><li><a href="module-Catalogue.html">Catalogue</a></li><li><a href="module-CNO.html">CNO</a></li><li><a href="module-Faas.html">Faas</a></li><li><a href="module-Monitoring.html">Monitoring</a></li><li><a href="module-OSM.html">OSM</a></li><li><a href="module-VimEmu.html">VimEmu</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Nov 19 2019 11:53:48 GMT+0300 (GMT+03:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

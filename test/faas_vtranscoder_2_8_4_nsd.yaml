@@ -1,0 +1,91 @@
+toscaDefinitionsVersion: tosca_sol001_v0_10
+description: faas_vtranscoder_2_8_4_nsd
+
+metadata:
+  descriptorId: 59ee1d7c-a643-4eed-9730-2f91e1be6789
+  vendor: OSM
+  version: "1.0"
+
+topologyTemplate:
+  
+  substitutionMappings:
+    nodeType: tosca.nodes.nfv.NS
+    requirements:
+      virtualLink: [{cp: faas_VNF1, vl: origin_net},{cp: faas_VNF2, vl: origin_net}]
+  
+  nodeTemplates:
+    
+    nsd:
+      type: tosca.nodes.nfv.NS
+      properties:
+        descriptorId: 59ee1d7c-a643-4eed-9730-2f91e1be6789
+        designer: OSM
+        version: "1.0"
+        name: faas_vtranscoder_2_8_4_nsd
+        invariantId: 59ee1d7c-a643-4eed-9730-2f91e1be6789
+      requirements:
+        virtualLink: [origin_net]
+
+    origin_net:
+      type: tosca.nodes.nfv.NsVirtualLink
+      properties:
+        description: Mgmt VL
+        testAccess: [NONE]
+        vlProfile:
+          maxBitrateRequirements:
+            root: 1000000
+            leaf: 100000
+          minBitrateRequirements:
+            root: 100000
+            leaf: 10000
+        connectivityType:
+          layerProtocols: [IPV4]
+          flowPattern: LINE
+        
+    faas_VNF1:
+      type: tosca.nodes.nfv.VNF
+      properties:
+        descriptorId: 59ee1d7c-a643-4eed-9730-2f91e1be2345
+        descriptorVersion: "1.0"
+        provider: OSM
+        productName: faas_vtranscoder_2_8_4_vnfd
+        softwareVersion: v1.0
+        productInfoName: faas_vtranscoder_2_8_4_vnfd
+        productInfoDescription: faas_vtranscoder_2_8_4_vnfd
+        vnfmInfo:
+          - juju
+        localizationLanguages:
+          - ENG
+        defaultLocalizationLanguage: ENG
+        configurableProperties:
+          isAutoscaleEnabled: "false"
+          isAutohealEnabled: "false"
+        flavourId: simple
+        flavourDescription: Simple deployment flavour
+      requirements:
+          virtualLink:
+          - origin_net
+          
+    faas_VNF2:
+      type: tosca.nodes.nfv.VNF
+      properties:
+        descriptorId: 59ee1d7c-a643-4eed-9730-2f91e1be2345
+        descriptorVersion: "1.0"
+        provider: OSM
+        productName: faas_vtranscoder_2_8_4_vnfd
+        softwareVersion: v1.0
+        productInfoName: faas_vtranscoder_2_8_4_vnfd
+        productInfoDescription: faas_vtranscoder_2_8_4_vnfd
+        vnfmInfo:
+          - juju
+        localizationLanguages:
+          - ENG
+        defaultLocalizationLanguage: ENG
+        configurableProperties:
+          isAutoscaleEnabled: "false"
+          isAutohealEnabled: "false"
+        flavourId: simple
+        flavourDescription: Simple deployment flavour
+      requirements:
+          virtualLink:
+          - origin_net
